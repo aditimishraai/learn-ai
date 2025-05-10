@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Architecture Flow - AI Data Flow Tutorial</title>
+        <link rel="stylesheet" href="assets/css/global.css">
+        <style>
+            .architecture-diagram {
+                position: relative;
+                width: 100%;
+                height: 600px;
+                margin: 2rem 0;
+                background: var(--bg-secondary);
+                border-radius: 12px;
+                overflow: hidden;
+            }
+
+            .layer {
+                position: absolute;
+                width: 80%;
+                left: 10%;
+                height: 80px;
+                background: var(--bg-primary);
+                border: 2px solid var(--accent-primary);
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                box-shadow: var(--card-shadow);
+            }
+
+            .layer:hover {
+                transform: scale(1.02);
+                box-shadow: var(--hover-shadow);
+            }
+
+            .layer h3 {
+                margin: 0;
+                color: var(--text-primary);
+            }
+
+            .flow-arrow {
+                position: absolute;
+                width: 2px;
+                background: var(--accent-primary);
+                transform-origin: top;
+                animation: flowAnimation 2s infinite;
+            }
+
+            .flow-arrow::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-top: 12px solid var(--accent-primary);
+            }
+
+            .layer-details {
+                position: fixed;
+                top: 50%;
+                right: 2rem;
+                transform: translateY(-50%);
+                width: 300px;
+                background: var(--bg-secondary);
+                padding: 1.5rem;
+                border-radius: 12px;
+                box-shadow: var(--card-shadow);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 100;
+            }
+
+            .layer-details.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .layer-details h3 {
+                color: var(--accent-primary);
+                margin-top: 0;
+            }
+
+            .layer-details .close-btn {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                background: none;
+                border: none;
+                color: var(--text-secondary);
+                cursor: pointer;
+                font-size: 1.2rem;
+                padding: 0.5rem;
+                transition: color 0.3s ease;
+            }
+
+            .layer-details .close-btn:hover {
+                color: var(--accent-primary);
+            }
+
+            @keyframes flowAnimation {
+                0% {
+                    height: 0;
+                    opacity: 0;
+                }
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    height: 100px;
+                    opacity: 0;
+                }
+            }
+
+            .tech-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+
+            .tech-tag {
+                background: var(--accent-primary);
+                color: var(--button-text);
+                padding: 0.25rem 0.75rem;
+                border-radius: 4px;
+                font-size: 0.9rem;
+            }
+
+            .learning-resources {
+                background: var(--bg-secondary);
+                padding: 1.5rem;
+                border-radius: 8px;
+                margin: 1rem 0;
+            }
+
+            .learning-resources h4 {
+                color: var(--accent-primary);
+                margin-top: 0;
+            }
+
+            .resource-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+
+            .resource-card {
+                background: var(--bg-primary);
+                padding: 1rem;
+                border-radius: 6px;
+                border-left: 3px solid var(--accent-primary);
+            }
+
+            .resource-card h5 {
+                margin: 0 0 0.5rem 0;
+                color: var(--text-primary);
+            }
+
+            .resource-card p {
+                margin: 0;
+                font-size: 0.9rem;
+                color: var(--text-secondary);
+            }
+
+            .resource-card a {
+                display: inline-block;
+                margin-top: 0.5rem;
+                color: var(--accent-primary);
+                text-decoration: none;
+            }
+
+            .resource-card a:hover {
+                text-decoration: underline;
+            }
+
+            .best-practices {
+                background: var(--bg-secondary);
+                padding: 1.5rem;
+                border-radius: 8px;
+                margin: 1rem 0;
+            }
+
+            .best-practices h4 {
+                color: var(--accent-primary);
+                margin-top: 0;
+            }
+
+            .practice-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+
+            .practice-item {
+                background: var(--bg-primary);
+                padding: 1rem;
+                border-radius: 6px;
+                border-left: 3px solid var(--accent-primary);
+            }
+
+            .practice-item h5 {
+                margin: 0 0 0.5rem 0;
+                color: var(--text-primary);
+            }
+
+            .practice-item p {
+                margin: 0;
+                font-size: 0.9rem;
+                color: var(--text-secondary);
+            }
+
+            .code-example {
+                background: var(--bg-primary);
+                padding: 1rem;
+                border-radius: 6px;
+                margin: 1rem 0;
+                font-family: monospace;
+                overflow-x: auto;
+            }
+
+            .code-example pre {
+                margin: 0;
+                color: var(--text-primary);
+            }
+
+            .layer-details .component-list {
+                margin: 1rem 0;
+            }
+
+            .layer-details .component-list li {
+                margin-bottom: 0.5rem;
+                color: var(--text-secondary);
+            }
+
+            .layer-details .component-list li strong {
+                color: var(--text-primary);
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Theme Toggle Button -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <svg class="sun-icon" viewBox="0 0 24 24">
+                <path d="M12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3zm0-2V4c0-.55-.45-1-1-1s-1 .45-1 1v3c0 .55.45 1 1 1s1-.45 1-1zm0 14c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1s1-.45 1-1v-3c0-.55-.45-1-1-1zM4.93 6.35L3.51 4.93c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.42 1.42c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41zm14.14 14.14l1.42 1.42c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-1.42-1.42c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41zM4 12c0-.55-.45-1-1-1H0c-.55 0-1 .45-1 1s.45 1 1 1h3c.55 0 1-.45 1-1zm20-1h-3c-.55 0-1 .45-1 1s.45 1 1 1h3c.55 0 1-.45 1-1s-.45-1-1-1zM4.93 17.65c-.39.39-.39 1.02 0 1.41l1.42 1.42c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-1.42-1.42c-.39-.39-1.02-.39-1.41 0zm14.14-14.14c.39-.39.39-1.02 0-1.41l-1.42-1.42c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.42 1.42c.39.39 1.02.39 1.41 0z"/>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" style="display: none;">
+                <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+            </svg>
+        </button>
+
+        <!-- Loading Bar -->
+        <div class="loading"></div>
+
+        <header>
+            <h1>Architecture Flow</h1>
+            <p>Understanding the complete data flow architecture</p>
+        </header>
+
+        <nav>
+            <a href="index.html#overview">Overview</a>
+            <a href="data-sources.html">Data Sources</a>
+            <a href="data-engineering.html">Data Engineering</a>
+            <a href="ai-components.html">AI Components</a>
+            <a href="ai-applications.html">AI Applications</a>
+            <a href="architecture-flow.html">Architecture Flow</a>
+        </nav>
+
+        <div class="container">
+            <section class="section">
+                <h2>Data Flow Architecture</h2>
+                
+                <div class="highlight">
+                    <p>The architecture flow represents the complete journey of data through an AI system, from raw data sources to final applications. Understanding this flow is crucial for building effective and scalable AI solutions.</p>
+                    <p>This tutorial will guide you through each layer of the architecture, explaining its purpose, components, and best practices for implementation.</p>
+                </div>
+                
+                <div class="architecture-diagram">
+                    <!-- Layers -->
+                    <div class="layer" style="top: 20px;" data-layer="ingestion">
+                        <h3>Data Ingestion Layer</h3>
+                    </div>
+                    <div class="layer" style="top: 140px;" data-layer="processing">
+                        <h3>Data Processing Layer</h3>
+                    </div>
+                    <div class="layer" style="top: 260px;" data-layer="storage">
+                        <h3>Data Storage Layer</h3>
+                    </div>
+                    <div class="layer" style="top: 380px;" data-layer="ai">
+                        <h3>AI Processing Layer</h3>
+                    </div>
+                    <div class="layer" style="top: 500px;" data-layer="application">
+                        <h3>Application Layer</h3>
+                    </div>
+
+                    <!-- Flow Arrows -->
+                    <div class="flow-arrow" style="left: 50%; top: 100px;"></div>
+                    <div class="flow-arrow" style="left: 50%; top: 220px;"></div>
+                    <div class="flow-arrow" style="left: 50%; top: 340px;"></div>
+                    <div class="flow-arrow" style="left: 50%; top: 460px;"></div>
+                </div>
+
+                <!-- Layer Details Panel -->
+                <div class="layer-details">
+                    <button class="close-btn">&times;</button>
+                    <h3>Layer Details</h3>
+                    <div class="layer-content"></div>
+                </div>
+                
+                <div class="learning-resources">
+                    <h4>Learning Resources</h4>
+                    <div class="resource-list">
+                        <div class="resource-card">
+                            <h5>Data Engineering Fundamentals</h5>
+                            <p>Learn the basics of data engineering and ETL processes</p>
+                            <a href="#" target="_blank">Start Learning →</a>
+                        </div>
+                        <div class="resource-card">
+                            <h5>AI System Architecture</h5>
+                            <p>Deep dive into designing scalable AI systems</p>
+                            <a href="#" target="_blank">Explore →</a>
+                        </div>
+                        <div class="resource-card">
+                            <h5>Best Practices Guide</h5>
+                            <p>Industry standards and best practices for AI implementation</p>
+                            <a href="#" target="_blank">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="best-practices">
+                    <h4>Implementation Best Practices</h4>
+                    <div class="practice-list">
+                        <div class="practice-item">
+                            <h5>Data Quality</h5>
+                            <p>Implement robust data validation and quality checks at each layer</p>
+                        </div>
+                        <div class="practice-item">
+                            <h5>Scalability</h5>
+                            <p>Design for horizontal scaling and handle increasing data volumes</p>
+                        </div>
+                        <div class="practice-item">
+                            <h5>Security</h5>
+                            <p>Implement proper authentication and data encryption</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-example">
+                    <h4>Example: Basic Data Pipeline</h4>
+                    <pre>
+# Example of a simple data pipeline
+from kafka import KafkaConsumer
+from pyspark.sql import SparkSession
+import pandas as pd
+
+# Data Ingestion
+consumer = KafkaConsumer('data-topic')
+for message in consumer:
+    data = message.value
+
+# Data Processing
+spark = SparkSession.builder.appName('DataProcessing').getOrCreate()
+df = spark.createDataFrame(data)
+
+# Data Storage
+df.write.format('parquet').save('processed_data')
+
+# AI Processing
+model = load_model('ai_model')
+predictions = model.predict(df)
+
+# Application Layer
+api = FastAPI()
+@api.post('/predict')
+def predict(data):
+    return predictions
+                    </pre>
+                </div>
+                
+                <div class="highlight">
+                    <h3>Complete Data Flow</h3>
+                    <p>This architecture ensures a smooth flow of data from collection to application, with each layer playing a crucial role in the overall system. The success of an AI application depends on the effective integration and operation of all these components.</p>
+                    <p>By understanding this architecture, you can design and implement AI systems that are scalable, maintainable, and capable of delivering real value to users.</p>
+                </div>
+                
+                <div class="nav-container">
+                    <a href="index.html" class="cta-button">Back to Overview</a>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>© 2025 Data Flow for AI Tutorial | A Comprehensive Guide for New Enthusiasts</p>
+        </footer>
+
+        <script src="assets/js/chat.js"></script>
+        <script>
+            // Theme Toggle Functionality
+            const themeToggle = document.getElementById('themeToggle');
+            const sunIcon = themeToggle.querySelector('.sun-icon');
+            const moonIcon = themeToggle.querySelector('.moon-icon');
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcons(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcons(newTheme);
+            });
+
+            function updateThemeIcons(theme) {
+                if (theme === 'light') {
+                    sunIcon.style.display = 'none';
+                    moonIcon.style.display = 'block';
+                } else {
+                    sunIcon.style.display = 'block';
+                    moonIcon.style.display = 'none';
+                }
+            }
+
+            // Loading Animation
+            window.addEventListener('load', () => {
+                const loading = document.querySelector('.loading');
+                loading.style.display = 'none';
+            });
+
+            // Enhanced Layer Details
+            const layerDetails = {
+                ingestion: {
+                    title: 'Data Ingestion Layer',
+                    description: 'The entry point for all data into the system, responsible for collecting and initial processing of raw data. This layer handles both real-time streaming data and batch data collection.',
+                    components: [
+                        'Data connectors: Interface with various data sources',
+                        'Stream processors: Handle real-time data ingestion',
+                        'Batch collectors: Process large datasets in batches',
+                        'Data validation: Ensure data quality and format'
+                    ],
+                    technologies: ['Kafka', 'Flume', 'NiFi', 'Logstash'],
+                    bestPractices: [
+                        'Implement robust error handling',
+                        'Use appropriate buffering mechanisms',
+                        'Monitor ingestion rates and latency',
+                        'Validate data at the source'
+                    ]
+                },
+                processing: {
+                    title: 'Data Processing Layer',
+                    description: 'Where raw data is transformed, cleaned, and prepared for AI processing. This layer is crucial for ensuring data quality and creating features that AI models can use effectively.',
+                    components: [
+                        'ETL pipelines: Extract, transform, and load data',
+                        'Data transformation: Convert data into usable formats',
+                        'Feature engineering: Create meaningful features',
+                        'Data quality checks: Ensure data integrity'
+                    ],
+                    technologies: ['Spark', 'Flink', 'Airflow', 'dbt'],
+                    bestPractices: [
+                        'Implement idempotent processing',
+                        'Use version control for transformations',
+                        'Monitor processing performance',
+                        'Implement data quality checks'
+                    ]
+                },
+                storage: {
+                    title: 'Data Storage Layer',
+                    description: 'Manages the storage and organization of processed data for AI consumption. This layer must balance performance, cost, and accessibility while ensuring data security.',
+                    components: [
+                        'Data lakes: Store raw and processed data',
+                        'Data warehouses: Optimized for analytics',
+                        'Feature stores: Manage ML features',
+                        'Vector databases: Store embeddings'
+                    ],
+                    technologies: ['S3', 'Snowflake', 'Pinecone', 'MongoDB'],
+                    bestPractices: [
+                        'Implement data versioning',
+                        'Use appropriate storage formats',
+                        'Implement access controls',
+                        'Monitor storage costs'
+                    ]
+                },
+                ai: {
+                    title: 'AI Processing Layer',
+                    description: 'Where AI models and algorithms process the prepared data to generate insights and predictions. This layer must be scalable and maintainable while delivering accurate results.',
+                    components: [
+                        'Model serving: Deploy and serve AI models',
+                        'Inference engines: Process data with models',
+                        'Model monitoring: Track model performance',
+                        'Performance tracking: Monitor system metrics'
+                    ],
+                    technologies: ['TensorFlow Serving', 'TorchServe', 'Seldon', 'MLflow'],
+                    bestPractices: [
+                        'Implement model versioning',
+                        'Monitor model drift',
+                        'Use appropriate hardware',
+                        'Implement fallback mechanisms'
+                    ]
+                },
+                application: {
+                    title: 'Application Layer',
+                    description: 'The final layer where AI insights are delivered to end users through various applications. This layer must be user-friendly and responsive while handling complex AI outputs.',
+                    components: [
+                        'Web applications: User interfaces',
+                        'Mobile apps: Mobile interfaces',
+                        'APIs: Service interfaces',
+                        'Dashboards: Data visualization'
+                    ],
+                    technologies: ['React', 'Flutter', 'FastAPI', 'Tableau'],
+                    bestPractices: [
+                        'Implement proper error handling',
+                        'Use appropriate caching',
+                        'Monitor user experience',
+                        'Implement security measures'
+                    ]
+                }
+            };
+
+            const detailsPanel = document.querySelector('.layer-details');
+            const layerContent = document.querySelector('.layer-content');
+            const closeBtn = document.querySelector('.close-btn');
+
+            document.querySelectorAll('.layer').forEach(layer => {
+                layer.addEventListener('click', () => {
+                    const layerData = layerDetails[layer.dataset.layer];
+                    layerContent.innerHTML = `
+                        <p>${layerData.description}</p>
+                        <h4>Key Components:</h4>
+                        <ul class="component-list">
+                            ${layerData.components.map(comp => `<li><strong>${comp.split(':')[0]}:</strong> ${comp.split(':')[1]}</li>`).join('')}
+                        </ul>
+                        <h4>Technologies:</h4>
+                        <div class="tech-tags">
+                            ${layerData.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                        </div>
+                        <h4>Best Practices:</h4>
+                        <ul class="component-list">
+                            ${layerData.bestPractices.map(practice => `<li>${practice}</li>`).join('')}
+                        </ul>
+                    `;
+                    detailsPanel.classList.add('active');
+                });
+            });
+
+            closeBtn.addEventListener('click', () => {
+                detailsPanel.classList.remove('active');
+            });
+
+            // Smooth Scroll for Navigation
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Add active state to current page in navigation
+            const currentPage = window.location.pathname.split('/').pop();
+            document.querySelectorAll('nav a').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.style.backgroundColor = 'var(--accent-secondary)';
+                }
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Flow for AI: A Comprehensive Tutorial</title>
+    <link rel="stylesheet" href="assets/css/global.css">
+    <script src="assets/js/data-flow-animation.js"></script>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="sun-icon" viewBox="0 0 24 24">
+            <path d="M12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3zm0-2V4c0-.55-.45-1-1-1s-1 .45-1 1v3c0 .55.45 1 1 1s1-.45 1-1zm0 14c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1s1-.45 1-1v-3c0-.55-.45-1-1-1zM4.93 6.35L3.51 4.93c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.42 1.42c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41zm14.14 14.14l1.42 1.42c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-1.42-1.42c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41zM4 12c0-.55-.45-1-1-1H0c-.55 0-1 .45-1 1s.45 1 1 1h3c.55 0 1-.45 1-1zm20-1h-3c-.55 0-1 .45-1 1s.45 1 1 1h3c.55 0 1-.45 1-1s-.45-1-1-1zM4.93 17.65c-.39.39-.39 1.02 0 1.41l1.42 1.42c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-1.42-1.42c-.39-.39-1.02-.39-1.41 0zm14.14-14.14c.39-.39.39-1.02 0-1.41l-1.42-1.42c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.42 1.42c.39.39 1.02.39 1.41 0z"/>
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" style="display: none;">
+            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+        </svg>
+    </button>
+
+    <!-- Loading Bar -->
+    <div class="loading"></div>
+
+    <header>
+        <h1>Data Flow for AI Applications</h1>
+        <p>A comprehensive guide for new enthusiasts</p>
+    </header>
+    
+    <nav>
+        <a href="#overview">Overview</a>
+        <a href="data-sources.html">Data Sources</a>
+        <a href="data-engineering.html">Data Engineering</a>
+        <a href="ai-components.html">AI Components</a>
+        <a href="ai-applications.html">AI Applications</a>
+        <a href="architecture-flow.html">Architecture Flow</a>
+    </nav>
+    
+    <div class="container">
+        <section class="section" id="overview">
+            <h2>Understanding the AI Data Ecosystem</h2>
+            
+            <div class="card">
+                <h3>The Big Picture</h3>
+                <p>AI systems don't exist in isolation - they rely on complex data pipelines that transform raw information into actionable intelligence. This tutorial will guide you through each component of the modern AI data ecosystem.</p>
+            </div>
+            
+            <div class="highlight">
+                <h3>Data Flow: From Raw Data to AI Applications</h3>
+                <p>The diagram depicts the end-to-end journey that data takes:</p>
+                <ol>
+                    <li><strong>Data Sources</strong>: Various types of data (text, images, video, etc.) enter the pipeline</li>
+                    <li><strong>Data Engineering</strong>: Raw data is processed, transformed, and stored</li>
+                    <li><strong>AI Components</strong>: Processed data powers various AI technologies</li>
+                    <li><strong>AI Applications</strong>: End solutions that solve real-world problems</li>
+                </ol>
+            </div>
+            
+            <h3>Why This Matters</h3>
+            <p>Understanding the complete data flow helps you:</p>
+            <ul>
+                <li>Identify bottlenecks in AI development</li>
+                <li>Choose the right tools and technologies</li>
+                <li>Build more effective AI solutions</li>
+                <li>Collaborate better with specialists across the pipeline</li>
+            </ul>
+            
+            <div class="flow-diagram">
+                <img src="/api/placeholder/800/400" alt="Data Flow Overview">
+                <p><em>The Extract-Transform-Load (ETL) process forms the foundation of all AI applications</em></p>
+            </div>
+            
+            <h3>Navigate This Tutorial</h3>
+            <p>Each section explores a major component of the AI data ecosystem in detail:</p>
+            
+            <div class="card">
+                <h4>Data Sources</h4>
+                <p>Explore the various types of data that fuel AI applications - from structured databases to unstructured media.</p>
+                <a href="data-sources.html" class="cta-button">Explore Data Sources</a>
+            </div>
+            
+            <div class="card">
+                <h4>Data Engineering</h4>
+                <p>Learn how raw data is transformed, processed, and prepared to be useful for AI systems.</p>
+                <a href="data-engineering.html" class="cta-button">Dive Into Data Engineering</a>
+            </div>
+            
+            <div class="card">
+                <h4>AI Components</h4>
+                <p>Understand the core AI technologies that process engineered data to create intelligence.</p>
+                <a href="ai-components.html" class="cta-button">Discover AI Components</a>
+            </div>
+            
+            <div class="card">
+                <h4>AI Applications</h4>
+                <p>See how the processed data ultimately powers real-world AI applications and solutions.</p>
+                <a href="ai-applications.html" class="cta-button">Explore AI Applications</a>
+            </div>
+            
+            <div class="card">
+                <h4>Interactive Architecture Flow</h4>
+                <p><strong>New!</strong> Experience the complete AI data flow with our interactive visualization. Watch how data transforms as it moves through each stage of the pipeline.</p>
+                <a href="architecture-flow.html" class="cta-button">Explore the Architecture Flow</a>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>© 2025 Data Flow for AI Tutorial | A Comprehensive Guide for New Enthusiasts</p>
+    </footer>
+
+    <script src="assets/js/chat.js"></script>
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = themeToggle.querySelector('.sun-icon');
+        const moonIcon = themeToggle.querySelector('.moon-icon');
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcons(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        });
+
+        function updateThemeIcons(theme) {
+            if (theme === 'light') {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+        }
+
+        // Loading Animation
+        window.addEventListener('load', () => {
+            const loading = document.querySelector('.loading');
+            loading.style.display = 'none';
+        });
+
+        // Smooth Scroll for Navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Add active state to current page in navigation
+        const currentPage = window.location.pathname.split('/').pop();
+        document.querySelectorAll('nav a').forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.style.backgroundColor = 'var(--accent-secondary)';
+            }
+        });
+    </script>
+</body>
+</html>

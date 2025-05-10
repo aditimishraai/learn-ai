@@ -1,0 +1,2154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Data Flow: Complete Architecture & Learning Guide</title>
+    <style>
+        :root {
+            --primary-color: #0d47a1;
+            --primary-light: #1976d2;
+            --primary-dark: #002171;
+            --secondary-color: #ff6f00;
+            --secondary-light: #ff9e40;
+            --secondary-dark: #c43e00;
+            --success-color: #2e7d32;
+            --info-color: #0097a7;
+            --warning-color: #ff8f00;
+            --danger-color: #c62828;
+            --gray-light: #f5f5f5;
+            --gray-medium: #e0e0e0;
+            --gray-dark: #757575;
+            --section-bg: #ffffff;
+            --border-radius: 8px;
+            --shadow-small: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-medium: 0 4px 8px rgba(0,0,0,0.1);
+            --shadow-large: 0 8px 16px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+            color: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .logo-icon {
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 0.25rem;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: white;
+            transition: width var(--transition-speed);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 5rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 6rem;
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background-color: var(--secondary-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .architecture-container {
+            background-color: var(--section-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-large);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: 1fr 3fr 2fr;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .grid-section-title {
+            text-align: center;
+            grid-column: span 3;
+            color: var(--primary-dark);
+            margin: 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gray-medium);
+        }
+
+        .data-sources {
+            grid-column: 1;
+            grid-row: span 2;
+            border-right: 2px dashed var(--gray-medium);
+            padding-right: 1rem;
+        }
+
+        .data-engineering {
+            grid-column: 2;
+            grid-row: span 2;
+            border-right: 2px dashed var(--gray-medium);
+            padding: 0 1rem;
+        }
+
+        .ai-components {
+            grid-column: 3;
+            display: grid;
+            grid-template-rows: auto auto;
+            gap: 1rem;
+        }
+
+        .arch-box {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-small);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .arch-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--primary-light);
+            transition: height 0.2s;
+        }
+
+        .arch-box:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .arch-box:hover::before {
+            height: 7px;
+        }
+
+        .arch-box.active {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(255, 111, 0, 0.2);
+        }
+
+        .arch-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .arch-icon {
+            margin-right: 0.5rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-light);
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+        }
+
+        .arch-description {
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+        }
+
+        /* Data Source Boxes */
+        .data-source-box {
+            border-left: 3px solid #2196f3;
+        }
+
+        .data-source-box .arch-icon {
+            background-color: #2196f3;
+        }
+
+        .data-source-box::before {
+            background-color: #2196f3;
+        }
+
+        /* Data Engineering Boxes */
+        .engineering-box {
+            border-left: 3px solid #ff7043;
+        }
+
+        .engineering-box .arch-icon {
+            background-color: #ff7043;
+        }
+
+        .engineering-box::before {
+            background-color: #ff7043;
+        }
+
+        /* AI Components Boxes */
+        .ai-box {
+            border-left: 3px solid #5e35b1;
+        }
+
+        .ai-box .arch-icon {
+            background-color: #5e35b1;
+        }
+
+        .ai-box::before {
+            background-color: #5e35b1;
+        }
+
+        /* AI Applications Boxes */
+        .app-box {
+            border-left: 3px solid #00897b;
+        }
+
+        .app-box .arch-icon {
+            background-color: #00897b;
+        }
+
+        .app-box::before {
+            background-color: #00897b;
+        }
+
+        /* ETL Process Section */
+        .etl-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            grid-column: span 3;
+        }
+
+        .etl-step {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-small);
+            margin: 0 0.5rem;
+            position: relative;
+            cursor: pointer;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        .etl-step:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .etl-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            font-weight: bold;
+        }
+
+        .etl-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 1rem;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .extract .etl-icon {
+            background-color: #1e88e5;
+        }
+
+        .transform .etl-icon {
+            background-color: #7b1fa2;
+        }
+
+        .load .etl-icon {
+            background-color: #43a047;
+        }
+
+        /* Detail Panel */
+        .detail-panel {
+            max-height: 0;
+            overflow: hidden;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            margin-top: 1rem;
+            transition: max-height 0.5s ease;
+            box-shadow: var(--shadow-small);
+            grid-column: span 3;
+        }
+
+        .detail-panel.open {
+            max-height: 800px;
+            margin-bottom: 2rem;
+        }
+
+        .detail-content {
+            padding: 1.5rem;
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .detail-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+        }
+
+        .detail-title {
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+        }
+
+        .detail-description {
+            margin-bottom: 1rem;
+        }
+
+        .detail-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-tag {
+            background-color: var(--gray-light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background-color: var(--section-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-medium);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-section h3 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--gray-medium);
+            padding-bottom: 0.5rem;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+        }
+
+        .content-section ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Project Guide Styles */
+        .project-guide {
+            margin-top: 4rem;
+        }
+
+        .step-container {
+            display: flex;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .step-number {
+            flex: 0 0 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 1.5rem;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-container:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            width: 2px;
+            height: calc(100% - 30px);
+            background-color: var(--gray-medium);
+        }
+
+        .step-header {
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        .step-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-small);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-light);
+        }
+
+        .resource-section {
+            background-color: #e8f5e9;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #43a047;
+        }
+
+        .resource-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .resource-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-small);
+            padding: 1rem;
+            border-top: 3px solid #43a047;
+            transition: transform var(--transition-speed);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .resource-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark);
+        }
+
+        .resource-type {
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+            display: inline-block;
+            background-color: var(--gray-light);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-example {
+            background-color: #e3f2fd;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #1976d2;
+        }
+
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-light);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: var(--shadow-medium);
+            z-index: 100;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .architecture-grid {
+                grid-template-columns: 1fr 2fr;
+            }
+            
+            .data-sources {
+                grid-column: 1;
+            }
+            
+            .data-engineering {
+                grid-column: 2;
+            }
+            
+            .ai-components {
+                grid-column: span 2;
+                grid-row: auto;
+                border-top: 2px dashed var(--gray-medium);
+                padding-top: 1rem;
+                margin-top: 1rem;
+            }
+
+            .grid-section-title {
+                grid-column: span 2;
+            }
+
+            .etl-container {
+                grid-column: span 2;
+            }
+
+            .detail-panel {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            nav {
+                width: 100%;
+                margin-top: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            .mobile-menu {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+            
+            .mobile-menu.open {
+                max-height: 300px;
+            }
+            
+            .architecture-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .data-sources, .data-engineering, .ai-components {
+                grid-column: 1;
+                border-right: none;
+                padding-right: 0;
+                border-bottom: 2px dashed var(--gray-medium);
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .ai-components {
+                border-bottom: none;
+            }
+
+            .grid-section-title {
+                grid-column: 1;
+            }
+
+            .etl-container {
+                grid-column: 1;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .etl-step:not(:last-child)::after {
+                content: '↓';
+                right: 50%;
+                top: auto;
+                bottom: -25px;
+                transform: translateX(50%);
+            }
+
+            .detail-panel {
+                grid-column: 1;
+            }
+
+            .step-container {
+                flex-direction: column;
+            }
+
+            .step-number {
+                margin: 0 auto 1rem;
+            }
+
+            .step-container:not(:last-child)::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .resource-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation keyframes */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">⚙️</span>
+                <span>AI Data Flow Architecture</span>
+            </div>
+            <button class="mobile-menu-btn">☰</button>
+            <nav class="mobile-menu">
+                <ul>
+                    <li><a href="#architecture">Architecture</a></li>
+                    <li><a href="#data-sources">Data Sources</a></li>
+                    <li><a href="#data-engineering">Data Engineering</a></li>
+                    <li><a href="#ai-components">AI Components</a></li>
+                    <li><a href="#ai-applications">Applications</a></li>
+                    <li><a href="#project-guide">Learning Project Guide</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <section id="architecture">
+            <h2 class="section-title">AI Data Flow Architecture</h2>
+            <div class="architecture-container">
+                <div class="architecture-grid">
+                    <!-- Data Sources Section -->
+                    <h3 class="grid-section-title">Data Sources</h3>
+                    
+                    <div class="data-sources">
+                        <div class="arch-box data-source-box" data-target="text-data">
+                            <div class="arch-title">
+                                <span class="arch-icon">T</span>
+                                Text Data
+                            </div>
+                            <p class="arch-description">Documents, articles, social media posts, emails, and other text-based information.</p>
+                        </div>
+                        
+                        <div class="arch-box data-source-box" data-target="relational-data">
+                            <div class="arch-title">
+                                <span class="arch-icon">DB</span>
+                                Relational Data
+                            </div>
+                            <p class="arch-description">Structured data stored in tables with defined relationships and schemas.</p>
+                        </div>
+                        
+                        <div class="arch-box data-source-box" data-target="visual-data">
+                            <div class="arch-title">
+                                <span class="arch-icon">V</span>
+                                Visual Data
+                            </div>
+                            <p class="arch-description">Images and other visual information for computer vision applications.</p>
+                        </div>
+                        
+                        <div class="arch-box data-source-box" data-target="video-data">
+                            <div class="arch-title">
+                                <span class="arch-icon">🎬</span>
+                                Video Data
+                            </div>
+                            <p class="arch-description">Time-series visual information with spatial and temporal components.</p>
+                        </div>
+                        
+                        <div class="arch-box data-source-box" data-target="audio-data">
+                            <div class="arch-title">
+                                <span class="arch-icon">🔊</span>
+                                Audio Data
+                            </div>
+                            <p class="arch-description">Sound recordings for speech recognition and audio analysis.</p>
+                        </div>
+                        
+                        <div class="arch-box data-source-box" data-target="non-relational-data">
+                            <div class="arch-title">
+                                <span class="arch-icon">NoS</span>
+                                Non-Relational
+                            </div>
+                            <p class="arch-description">Flexible data structures that don't follow the traditional table format.</p>
+                        </div>
+                        
+                        <div class="arch-box data-source-box" data-target="meta-data">
+                            <div class="arch-title">
+                                <span class="arch-icon">M</span>
+                                Meta Data
+                            </div>
+                            <p class="arch-description">Data about data - including context, ownership, and other metadata.</p>
+                        </div>
+                    </div>
+
+                    <!-- Data Engineering Section -->
+                    <h3 class="grid-section-title">Data Engineering / Feature Engineering</h3>
+                    
+                    <div class="data-engineering">
+                        <div class="arch-box engineering-box" data-target="data-engineers">
+                            <div class="arch-title">
+                                <span class="arch-icon">DE</span>
+                                Data Engineers
+                            </div>
+                            <p class="arch-description">Professionals who build and maintain data pipelines using REST, SFTP, SQL, Python, etc.</p>
+                        </div>
+                        
+                        <div class="arch-box engineering-box" data-target="data-pipeline">
+                            <div class="arch-title">
+                                <span class="arch-icon">DP</span>
+                                Data Pipeline
+                            </div>
+                            <p class="arch-description">The orchestration of data movement and transformation through various stages.</p>
+                        </div>
+                        
+                        <div class="arch-box engineering-box" data-target="data-lake">
+                            <div class="arch-title">
+                                <span class="arch-icon">DL</span>
+                                Data Lake
+                            </div>
+                            <p class="arch-description">Centralized repository for storing all structured and unstructured data at any scale.</p>
+                        </div>
+                        
+                        <div class="arch-box engineering-box" data-target="data-medallion">
+                            <div class="arch-title">
+                                <span class="arch-icon">DM</span>
+                                Data Medallion
+                            </div>
+                            <p class="arch-description">Bronze, Silver, and Gold tiers representing different levels of data refinement.</p>
+                        </div>
+                        
+                        <div class="arch-box engineering-box" data-target="data-modeling">
+                            <div class="arch-title">
+                                <span class="arch-icon">DM</span>
+                                Data Modeling
+                            </div>
+                            <p class="arch-description">Designing data structures, relationships, segregation, governance, and storage.</p>
+                        </div>
+                        
+                        <div class="arch-box engineering-box" data-target="data-ops">
+                            <div class="arch-title">
+                                <span class="arch-icon">DO</span>
+                                Data Ops
+                            </div>
+                            <p class="arch-description">Operational aspects ensuring reliability and monitoring of data pipelines.</p>
+                        </div>
+                    </div>
+
+                    <!-- AI Components Section -->
+                    <h3 class="grid-section-title">AI Components</h3>
+                    
+                    <div class="ai-components">
+                        <div class="arch-box ai-box" data-target="neural-networks">
+                            <div class="arch-title">
+                                <span class="arch-icon">NN</span>
+                                Neural Networks
+                            </div>
+                            <p class="arch-description">Computing systems inspired by biological neural networks in animal brains.</p>
+                        </div>
+                        
+                        <div class="arch-box ai-box" data-target="data-science">
+                            <div class="arch-title">
+                                <span class="arch-icon">DS</span>
+                                Data Science
+                            </div>
+                            <p class="arch-description">Extracting insights and knowledge from data using various analytical methods.</p>
+                        </div>
+                        
+                        <div class="arch-box ai-box" data-target="deep-learning">
+                            <div class="arch-title">
+                                <span class="arch-icon">DL</span>
+                                Deep Learning
+                            </div>
+                            <p class="arch-description">Neural networks with multiple layers for analyzing complex data structures.</p>
+                        </div>
+                        
+                        <div class="arch-box ai-box" data-target="machine-learning">
+                            <div class="arch-title">
+                                <span class="arch-icon">ML</span>
+                                Machine Learning
+                            </div>
+                            <p class="arch-description">Systems that learn from data and improve performance without explicit programming.</p>
+                        </div>
+                        
+                        <div class="arch-box ai-box" data-target="agi-learning">
+                            <div class="arch-title">
+                                <span class="arch-icon">AGI</span>
+                                AGI Learning
+                            </div>
+                            <p class="arch-description">AI systems with generalized cognitive abilities across multiple domains.</p>
+                        </div>
+                        
+                        <div class="arch-box ai-box" data-target="gen-ai">
+                            <div class="arch-title">
+                                <span class="arch-icon">GEN</span>
+                                Generative AI
+                            </div>
+                            <p class="arch-description">Systems capable of creating new content like text, images, and other media.</p>
+                        </div>
+                    </div>
+
+                    <!-- Applications Section -->
+                    <h3 class="grid-section-title">AI Applications</h3>
+                    
+                    <div class="ai-components">
+                        <div class="arch-box app-box" data-target="chat-apps">
+                            <div class="arch-title">
+                                <span class="arch-icon">CA</span>
+                                Chat Applications
+                            </div>
+                            <p class="arch-description">Conversational interfaces powered by language models for human-AI dialogue.</p>
+                        </div>
+                        
+                        <div class="arch-box app-box" data-target="headless-apps">
+                            <div class="arch-title">
+                                <span class="arch-icon">HA</span>
+                                Headless Applications
+                            </div>
+                            <p class="arch-description">AI systems operating without direct UIs, integrating into existing workflows.</p>
+                        </div>
+                        
+                        <div class="arch-box app-box" data-target="llm-apps">
+                            <div class="arch-title">
+                                <span class="arch-icon">LLM</span>
+                                LLM Applications
+                            </div>
+                            <p class="arch-description">Leveraging large language models for text processing and generation tasks.</p>
+                        </div>
+                        
+                        <div class="arch-box app-box" data-target="recommendation-apps">
+                            <div class="arch-title">
+                                <span class="arch-icon">RA</span>
+                                Recommendation Apps
+                            </div>
+                            <p class="arch-description">Systems that analyze preferences to suggest relevant products or content.</p>
+                        </div>
+                        
+                        <div class="arch-box app-box" data-target="operator-apps">
+                            <div class="arch-title">
+                                <span class="arch-icon">OA</span>
+                                Operator Applications
+                            </div>
+                            <p class="arch-description">Specialized apps performing specific tasks within larger systems.</p>
+                        </div>
+                        
+                        <div class="arch-box app-box" data-target="automation-tools">
+                            <div class="arch-title">
+                                <span class="arch-icon">AT</span>
+                                Automation Tools
+                            </div>
+                            <p class="arch-description">RPA, BPA, and visualization dashboards leveraging AI capabilities.</p>
+                        </div>
+                    </div>
+
+                    <!-- ETL Process Section -->
+                    <div class="etl-container">
+                        <div class="etl-step extract" data-target="extract-process">
+                            <div class="etl-icon">E</div>
+                            <h3>Extract</h3>
+                            <p>Pulling data from source systems</p>
+                        </div>
+                        
+                        <div class="etl-step transform" data-target="transform-process">
+                            <div class="etl-icon">T</div>
+                            <h3>Transform</h3>
+                            <p>Processing and enriching data</p>
+                        </div>
+                        
+                        <div class="etl-step load" data-target="load-process">
+                            <div class="etl-icon">L</div>
+                            <h3>Load</h3>
+                            <p>Storing data for consumption</p>
+                        </div>
+                    </div>
+
+                    <!-- Detail Panel (initially hidden) -->
+                    <div class="detail-panel" id="detailPanel">
+                        <div class="detail-content">
+                            <div class="detail-header">
+                                <div class="detail-icon" id="detailIcon">?</div>
+                                <h3 class="detail-title" id="detailTitle">Select a component</h3>
+                            </div>
+                            <div class="detail-description" id="detailDescription">
+                                Click on any component in the architecture to view detailed information about its role in the AI data flow ecosystem.
+                            </div>
+                            <div class="detail-features" id="detailFeatures">
+                                <!-- Features will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="data-sources">
+            <h2 class="section-title">Data Sources</h2>
+            <div class="content-section">
+                <p>Data is the foundation of all AI applications. The quality, diversity, and volume of your data directly impact the capabilities of your AI systems.</p>
+                
+                <h3>Key Data Source Types</h3>
+                
+                <p>There are several major categories of data that power AI systems:</p>
+                
+                <ul>
+                    <li><strong>Text Data:</strong> Documents, emails, social media, articles, books, and other written content.</li>
+                    <li><strong>Relational Data:</strong> Structured data in tables with defined relationships, often stored in SQL databases.</li>
+                    <li><strong>Visual Data:</strong> Images, charts, graphs, and other visual information processed by computer vision algorithms.</li>
+                    <li><strong>Video Data:</strong> Time-series visual information that requires processing both spatial and temporal components.</li>
+                    <li><strong>Audio Data:</strong> Speech, music, environmental sounds, and other acoustic information.</li>
+                    <li><strong>Non-Relational Data:</strong> Flexible data structures that don't fit the traditional table format, often stored in NoSQL databases.</li>
+                    <li><strong>Meta Data:</strong> Data about data, including context, sources, timestamps, and other attributes.</li>
+                </ul>
+                
+                <h3>Data Characteristics for AI</h3>
+                
+                <p>When collecting data for AI projects, several characteristics are crucial:</p>
+                
+                <ul>
+                    <li><strong>Volume:</strong> Sufficient quantity to train robust models.</li>
+                    <li><strong>Variety:</strong> Diverse examples covering the full problem space.</li>
+                    <li><strong>Velocity:</strong> How quickly new data is generated and processed.</li>
+                    <li><strong>Veracity:</strong> Accuracy and trustworthiness of the data.</li>
+                    <li><strong>Value:</strong> Relevance to the problem being solved.</li>
+                </ul>
+                
+                <h3>From Sources to Engineering</h3>
+                
+                <p>Raw data from these sources is rarely ready for immediate use in AI applications. The Extract stage of the ETL process pulls this data from its origin systems, preparing it for the transformation journey ahead.</p>
+            </div>
+        </section>
+
+        <section id="data-engineering">
+            <h2 class="section-title">Data Engineering</h2>
+            <div class="content-section">
+                <p>Data Engineering represents the crucial transformation layer that converts raw data into AI-ready assets. This process ensures data is clean, consistent, and optimized for AI consumption.</p>
+                
+                <h3>The Data Pipeline</h3>
+                
+                <p>The data pipeline is the heart of the data engineering process, orchestrating data movement and transformation through various stages:</p>
+                
+                <ol>
+                    <li><strong>Data Extraction:</strong> Pulling raw data from source systems</li>
+                    <li><strong>Data Transformation:</strong> Cleaning, enriching, and standardizing data</li>
+                    <li><strong>Data Loading:</strong> Moving processed data into storage systems</li>
+                </ol>
+                
+                <p>Modern data pipelines are typically automated, scalable, and monitored for performance and reliability. They can handle batch processing, real-time streaming, or a hybrid approach depending on the use case.</p>
+                
+                <h3>Data Lake Architecture</h3>
+                
+                <p>A data lake serves as a centralized repository that allows you to store all your structured and unstructured data at any scale. Unlike traditional data warehouses, data lakes store data in its native format until needed.</p>
+                
+                <h3>The Medallion Architecture</h3>
+                
+                <p>The medallion architecture is a data design pattern used to logically organize data in a lakehouse, with the goal of incrementally and progressively improving the structure and quality of data as it flows through each layer:</p>
+                
+                <ul>
+                    <li><strong>Bronze Tier:</strong> Raw, unprocessed data in its original format.</li>
+                    <li><strong>Silver Tier:</strong> Refined data that has been cleaned, validated, and structured.</li>
+                    <li><strong>Gold Tier:</strong> Business-level data optimized for specific use cases and consumption.</li>
+                </ul>
+                
+                <h3>Data Engineering Roles</h3>
+                
+                <ul>
+                    <li><strong>Data Engineers:</strong> Build and maintain data pipelines and infrastructure using tools like REST APIs, SQL, Python, etc.</li>
+                    <li><strong>Data Ops:</strong> Focus on the operational aspects of data systems, ensuring reliability and continuous improvement.</li>
+                </ul>
+                
+                <h3>Critical Data Engineering Functions</h3>
+                
+                <ul>
+                    <li><strong>Data Modeling:</strong> Designing the structure and relationships of data</li>
+                    <li><strong>Data Segregation:</strong> Isolating data for security, performance, or organizational purposes</li>
+                    <li><strong>Query Optimization:</strong> Ensuring efficient data retrieval</li>
+                    <li><strong>Data Governance:</strong> Managing data quality, security, and compliance</li>
+                    <li><strong>Integration:</strong> Combining data from multiple sources</li>
+                    <li><strong>Storage Management:</strong> Optimizing how and where data is stored</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="ai-components">
+            <h2 class="section-title">AI Components</h2>
+            <div class="content-section">
+                <p>"AI" is an umbrella term that encompasses various technologies and approaches. Each component in the AI stack serves specific purposes and has unique capabilities.</p>
+                
+                <h3>Neural Networks</h3>
+                
+                <p>Neural networks are computing systems inspired by the biological neural networks in animal brains. They form the foundation of many modern AI systems and consist of interconnected nodes (neurons) organized in layers.</p>
+                
+                <ul>
+                    <li>Layered architecture with input, hidden, and output layers</li>
+                    <li>Ability to learn complex patterns from data</li>
+                    <li>Adaptability to various data types and problems</li>
+                </ul>
+                
+                <h3>Data Science</h3>
+                
+                <p>Data Science sits at the intersection of statistics, mathematics, and computer science. It focuses on extracting insights and knowledge from data using various analytical methods.</p>
+                
+                <ul>
+                    <li>Exploratory data analysis</li>
+                    <li>Statistical modeling and hypothesis testing</li>
+                    <li>Data visualization and interpretation</li>
+                    <li>Predictive modeling and forecasting</li>
+                </ul>
+                
+                <h3>Deep Learning</h3>
+                
+                <p>Deep Learning is a subset of machine learning that uses neural networks with multiple layers (deep neural networks) to analyze various factors with a structure similar to the human brain.</p>
+                
+                <ul>
+                    <li>Automatic feature extraction from raw data</li>
+                    <li>Ability to handle large, complex datasets</li>
+                    <li>Hierarchical representation learning</li>
+                    <li>Superior performance in perception tasks (vision, speech)</li>
+                </ul>
+                
+                <h3>Machine Learning</h3>
+                
+                <p>Machine Learning is a branch of AI that focuses on building systems that learn from data and improve their performance over time without being explicitly programmed.</p>
+                
+                <ul>
+                    <li>Supervised learning (trained on labeled data)</li>
+                    <li>Unsupervised learning (finds patterns in unlabeled data)</li>
+                    <li>Reinforcement learning (learns through rewards/penalties)</li>
+                </ul>
+                
+                <h3>AGI Learning</h3>
+                
+                <p>Artificial General Intelligence (AGI) learning refers to the development of AI systems with generalized cognitive abilities comparable to human intelligence across multiple domains.</p>
+                
+                <ul>
+                    <li>Cross-domain learning and application</li>
+                    <li>Abstract reasoning and problem-solving</li>
+                    <li>Adaptation to novel scenarios</li>
+                    <li>Self-improvement and learning</li>
+                </ul>
+                
+                <h3>Generative AI</h3>
+                
+                <p>Generative AI refers to AI systems capable of creating new content, rather than just analyzing or classifying existing data. This includes language models, image generators, and other creative AI applications.</p>
+                
+                <ul>
+                    <li>Large Language Models (LLMs)</li>
+                    <li>Generative Adversarial Networks (GANs)</li>
+                    <li>Diffusion Models</li>
+                    <li>Retrieval-Augmented Generation (RAG)</li>
+                    <li>AI Agents for answering questions and taking actions</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="ai-applications">
+            <h2 class="section-title">AI Applications</h2>
+            <div class="content-section">
+                <p>AI Applications represent the final stage in the data flow journey - where processed data and AI technologies combine to deliver real-world solutions that address specific business needs and challenges.</p>
+                
+                <h3>Generative AI Applications</h3>
+                
+                <ul>
+                    <li><strong>Chat Applications:</strong> Conversational interfaces that leverage AI language models for natural dialogue with users.</li>
+                    <li><strong>Headless Applications:</strong> AI systems that operate without direct user interfaces, integrating into existing workflows.</li>
+                    <li><strong>LLM Applications:</strong> Systems that leverage Large Language Models for text processing, generation, and analysis.</li>
+                    <li><strong>Recommendation Systems:</strong> Applications that analyze user preferences to suggest relevant products or content.</li>
+                    <li><strong>Operator Applications:</strong> Specialized AI applications that perform specific tasks within larger systems.</li>
+                </ul>
+                
+                <h3>Automation and Visualization</h3>
+                
+                <ul>
+                    <li><strong>RPA (Robotic Process Automation):</strong> Combines AI capabilities with automation to mimic human actions and automate repetitive tasks.</li>
+                    <li><strong>Visualization Dashboards:</strong> Transform complex data into intuitive visual representations with AI-enhanced analytics.</li>
+                    <li><strong>BPA (Business Process Automation):</strong> End-to-end automation of complex business processes with intelligent decision-making.</li>
+                </ul>
+                
+                <h3>The Complete Data Flow Journey</h3>
+                
+                <p>Creating effective AI applications involves a complete ecosystem:</p>
+                
+                <ol>
+                    <li><strong>Data Sources:</strong> The raw materials from various origins</li>
+                    <li><strong>Data Engineering:</strong> The transformation and preparation processes</li>
+                    <li><strong>AI Components:</strong> The core technologies and algorithms</li>
+                    <li><strong>AI Applications:</strong> The final solutions that deliver value</li>
+                </ol>
+                
+                <p>This end-to-end data flow is critical for successful AI implementation. Each stage builds upon the previous, and weaknesses in any part of the chain can impact the overall effectiveness of the resulting applications.</p>
+            </div>
+        </section>
+
+        <section id="project-guide" class="project-guide">
+            <h2 class="section-title">How to Create a Great AI Learning Project</h2>
+            
+            <div class="step-container">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 class="step-header">Choose the Right Project Scope</h3>
+                    
+                    <div class="step-card">
+                        <p>Selecting an appropriate project is crucial for effective learning. Your first AI project should be:</p>
+                        
+                        <ul>
+                            <li><strong>Achievable:</strong> Something you can complete with your current resources</li>
+                            <li><strong>Meaningful:</strong> Addresses a real problem or interest</li>
+                            <li><strong>Scoped appropriately:</strong> Not too simple, not too complex</li>
+                            <li><strong>Data-available:</strong> Has accessible datasets to work with</li>
+                        </ul>
+                        
+                        <p>For beginners, consider these project types:</p>
+                        
+                        <ul>
+                            <li>Image classification (identifying objects in images)</li>
+                            <li>Sentiment analysis (determining emotion in text)</li>
+                            <li>Recommendation systems (suggesting products or content)</li>
+                            <li>Predictive analytics (forecasting future values)</li>
+                            <li>Chatbot development (creating conversational interfaces)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="project-example">
+                        <h4>Example Project: Sentiment Analysis of Product Reviews</h4>
+                        <p>This project involves analyzing customer reviews to classify them as positive, negative, or neutral. It's a great starter project because:</p>
+                        <ul>
+                            <li>Data is readily available (e.g., Amazon product reviews datasets)</li>
+                            <li>The problem is well-defined with clear evaluation metrics</li>
+                            <li>It has practical applications in business and marketing</li>
+                            <li>Techniques learned are transferable to other text analysis projects</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-container">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 class="step-header">Set Up Your Development Environment</h3>
+                    
+                    <div class="step-card">
+                        <p>Create a well-organized development environment for your AI project:</p>
+                        
+                        <ol>
+                            <li><strong>Select your tools:</strong>
+                                <ul>
+                                    <li>Python as your primary programming language</li>
+                                    <li>Jupyter Notebooks for experimentation and visualization</li>
+                                    <li>PyTorch or TensorFlow for deep learning</li>
+                                    <li>Scikit-learn for traditional machine learning</li>
+                                    <li>Pandas and NumPy for data manipulation</li>
+                                    <li>Git for version control</li>
+                                </ul>
+                            </li>
+                            <li><strong>Create a virtual environment:</strong> Isolate your project dependencies</li>
+                            <li><strong>Set up version control:</strong> Initialize a Git repository</li>
+                            <li><strong>Organize your project structure:</strong> Follow best practices for directory layout</li>
+                        </ol>
+                        
+                        <div class="code-block">
+# Create and activate a virtual environment
+python -m venv ai-project-env
+source ai-project-env/bin/activate  # On Windows: ai-project-env\Scripts\activate
+
+# Install core dependencies
+pip install jupyter numpy pandas scikit-learn matplotlib
+
+# For deep learning (choose one)
+pip install tensorflow  # or
+pip install torch torchvision
+
+# Save your dependencies
+pip freeze > requirements.txt
+                        </div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <h4>Recommended Project Structure</h4>
+                        
+                        <div class="code-block">
+project_name/
+├── data/               # Raw and processed data
+├── notebooks/          # Jupyter notebooks for exploration
+├── src/                # Source code for the project
+│   ├── __init__.py
+│   ├── data/           # Data processing scripts
+│   ├── features/       # Feature engineering code
+│   ├── models/         # Model definitions and training code
+│   └── visualization/  # Visualization utilities
+├── tests/              # Unit tests
+├── .gitignore          # Files to ignore in version control
+├── requirements.txt    # Project dependencies
+└── README.md           # Project documentation
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-container">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 class="step-header">Acquire and Prepare Your Data</h3>
+                    
+                    <div class="step-card">
+                        <p>Data is the foundation of your AI project. Follow these steps to create a robust data pipeline:</p>
+                        
+                        <ol>
+                            <li><strong>Source your data:</strong>
+                                <ul>
+                                    <li>Public datasets (Kaggle, UCI ML Repository, Google Dataset Search)</li>
+                                    <li>APIs (Twitter, Reddit, government data)</li>
+                                    <li>Web scraping (with appropriate permissions)</li>
+                                    <li>Generate synthetic data if needed</li>
+                                </ul>
+                            </li>
+                            <li><strong>Examine and understand your data:</strong>
+                                <ul>
+                                    <li>Data types, shapes, and distributions</li>
+                                    <li>Missing values and outliers</li>
+                                    <li>Relationships between variables</li>
+                                </ul>
+                            </li>
+                            <li><strong>Clean and preprocess:</strong>
+                                <ul>
+                                    <li>Handle missing values (imputation or removal)</li>
+                                    <li>Address outliers (transform or remove)</li>
+                                    <li>Normalize or standardize numerical features</li>
+                                    <li>Encode categorical variables</li>
+                                </ul>
+                            </li>
+                            <li><strong>Feature engineering:</strong>
+                                <ul>
+                                    <li>Create new features from existing ones</li>
+                                    <li>Extract meaningful patterns</li>
+                                    <li>Reduce dimensionality if needed</li>
+                                </ul>
+                            </li>
+                            <li><strong>Split your data:</strong>
+                                <ul>
+                                    <li>Training set (70-80%)</li>
+                                    <li>Validation set (10-15%)</li>
+                                    <li>Test set (10-15%)</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        
+                        <div class="code-block">
+# Example data preparation pipeline
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# Load data
+df = pd.read_csv('data/raw/dataset.csv')
+
+# Basic cleaning
+df = df.dropna()  # or use imputation strategies
+df = df[df['column'] != 'outlier_value']  # simple outlier removal
+
+# Feature engineering
+df['new_feature'] = df['feature1'] / df['feature2']
+df['log_feature'] = np.log1p(df['skewed_feature'])
+
+# Split features and target
+X = df.drop('target_column', axis=1)
+y = df['target_column']
+
+# Train/validation/test split
+X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.3, random_state=42)
+X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
+
+# Scaling
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_val_scaled = scaler.transform(X_val)
+X_test_scaled = scaler.transform(X_test)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-container">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3 class="step-header">Build and Train Your Model</h3>
+                    
+                    <div class="step-card">
+                        <p>Start with simple models and gradually increase complexity:</p>
+                        
+                        <ol>
+                            <li><strong>Establish a baseline:</strong>
+                                <ul>
+                                    <li>Begin with simple models (linear regression, logistic regression, decision trees)</li>
+                                    <li>Understand baseline performance metrics</li>
+                                </ul>
+                            </li>
+                            <li><strong>Experiment with different algorithms:</strong>
+                                <ul>
+                                    <li>Traditional ML: Random Forest, Gradient Boosting, SVM</li>
+                                    <li>Deep Learning: Multi-layer perceptron, CNN, RNN/LSTM</li>
+                                </ul>
+                            </li>
+                            <li><strong>Implement cross-validation:</strong>
+                                <ul>
+                                    <li>K-fold cross-validation to ensure model robustness</li>
+                                </ul>
+                            </li>
+                            <li><strong>Tune hyperparameters:</strong>
+                                <ul>
+                                    <li>Grid search or random search for parameter optimization</li>
+                                    <li>Consider Bayesian optimization for efficiency</li>
+                                </ul>
+                            </li>
+                            <li><strong>Evaluate model performance:</strong>
+                                <ul>
+                                    <li>Choose appropriate metrics (accuracy, precision, recall, F1-score, RMSE)</li>
+                                    <li>Analyze confusion matrices and error types</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        
+                        <div class="code-block">
+# Example model building with scikit-learn
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import classification_report
+
+# Create a baseline model
+baseline_model = RandomForestClassifier(random_state=42)
+baseline_model.fit(X_train_scaled, y_train)
+
+# Evaluate baseline
+y_val_pred = baseline_model.predict(X_val_scaled)
+print("Baseline model performance:")
+print(classification_report(y_val, y_val_pred))
+
+# Hyperparameter tuning
+param_grid = {
+    'n_estimators': [50, 100, 200],
+    'max_depth': [None, 10, 20, 30],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4]
+}
+
+grid_search = GridSearchCV(
+    estimator=RandomForestClassifier(random_state=42),
+    param_grid=param_grid,
+    cv=5,
+    n_jobs=-1,
+    scoring='f1'
+)
+
+grid_search.fit(X_train_scaled, y_train)
+print(f"Best parameters: {grid_search.best_params_}")
+
+# Final model with best parameters
+best_model = grid_search.best_estimator_
+y_test_pred = best_model.predict(X_test_scaled)
+print("Optimized model performance:")
+print(classification_report(y_test, y_test_pred))
+                        </div>
+                    </div>
+                    
+                    <div class="step-card">
+                        <h4>For Deep Learning Models</h4>
+                        
+                        <div class="code-block">
+# Example PyTorch neural network
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, TensorDataset
+
+# Convert data to PyTorch tensors
+X_train_tensor = torch.FloatTensor(X_train_scaled)
+y_train_tensor = torch.LongTensor(y_train.values)
+X_val_tensor = torch.FloatTensor(X_val_scaled)
+y_val_tensor = torch.LongTensor(y_val.values)
+
+# Create dataset and dataloader
+train_dataset = TensorDataset(X_train_tensor, y_train_tensor)
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+
+# Define the model
+class SimpleNN(nn.Module):
+    def __init__(self, input_dim, hidden_dim, output_dim):
+        super(SimpleNN, self).__init__()
+        self.layer1 = nn.Linear(input_dim, hidden_dim)
+        self.relu = nn.ReLU()
+        self.layer2 = nn.Linear(hidden_dim, output_dim)
+        
+    def forward(self, x):
+        x = self.layer1(x)
+        x = self.relu(x)
+        x = self.layer2(x)
+        return x
+
+# Initialize model, loss, and optimizer
+input_dim = X_train_scaled.shape[1]
+hidden_dim = 100
+output_dim = len(set(y_train))  # Number of classes
+
+model = SimpleNN(input_dim, hidden_dim, output_dim)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+# Training loop
+num_epochs = 20
+for epoch in range(num_epochs):
+    model.train()
+    for batch_X, batch_y in train_loader:
+        # Forward pass
+        outputs = model(batch_X)
+        loss = criterion(outputs, batch_y)
+        
+        # Backward and optimize
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+    
+    # Validation
+    model.eval()
+    with torch.no_grad():
+        outputs = model(X_val_tensor)
+        _, predicted = torch.max(outputs.data, 1)
+        accuracy = (predicted == y_val_tensor).sum().item() / y_val_tensor.size(0)
+        
+    print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}, Validation Accuracy: {accuracy:.4f}')
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-container">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3 class="step-header">Analyze, Interpret, and Visualize Results</h3>
+                    
+                    <div class="step-card">
+                        <p>Understanding your model's behavior is crucial for learning and improvement:</p>
+                        
+                        <ol>
+                            <li><strong>Visualize model performance:</strong>
+                                <ul>
+                                    <li>Learning curves (training vs. validation)</li>
+                                    <li>Confusion matrices</li>
+                                    <li>ROC curves and precision-recall curves</li>
+                                </ul>
+                            </li>
+                            <li><strong>Analyze feature importance:</strong>
+                                <ul>
+                                    <li>Feature importance scores</li>
+                                    <li>SHAP values for model interpretation</li>
+                                    <li>Partial dependence plots</li>
+                                </ul>
+                            </li>
+                            <li><strong>Examine error cases:</strong>
+                                <ul>
+                                    <li>Identify patterns in misclassifications</li>
+                                    <li>Understand limitations of your approach</li>
+                                </ul>
+                            </li>
+                            <li><strong>Create interactive visualizations:</strong>
+                                <ul>
+                                    <li>Dashboard with Plotly or Bokeh</li>
+                                    <li>Interactive demos with Streamlit or Gradio</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        
+                        <div class="code-block">
+# Visualization examples
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix, roc_curve, auc
+
+# Confusion matrix
+cm = confusion_matrix(y_test, y_test_pred)
+plt.figure(figsize=(10, 8))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+            xticklabels=list(set(y_test)), 
+            yticklabels=list(set(y_test)))
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+plt.show()
+
+# Feature importance for Random Forest
+if hasattr(best_model, 'feature_importances_'):
+    importances = best_model.feature_importances_
+    indices = np.argsort(importances)[::-1]
+    
+    plt.figure(figsize=(12, 8))
+    plt.title('Feature Importances')
+    plt.bar(range(X_train.shape[1]), importances[indices], align='center')
+    plt.xticks(range(X_train.shape[1]), X_train.columns[indices], rotation=90)
+    plt.tight_layout()
+    plt.show()
+
+# ROC curve for binary classification
+if len(set(y_test)) == 2:
+    y_score = best_model.predict_proba(X_test_scaled)[:, 1]
+    fpr, tpr, _ = roc_curve(y_test, y_score)
+    roc_auc = auc(fpr, tpr)
+    
+    plt.figure(figsize=(10, 8))
+    plt.plot(fpr, tpr, color='darkorange', lw=2, 
+             label=f'ROC curve (area = {roc_auc:.2f})')
+    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver Operating Characteristic')
+    plt.legend(loc='lower right')
+    plt.show()
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-container">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h3 class="step-header">Deploy Your Model and Document Your Work</h3>
+                    
+                    <div class="step-card">
+                        <p>Bring your project to life and share your knowledge:</p>
+                        
+                        <ol>
+                            <li><strong>Create a simple deployment:</strong>
+                                <ul>
+                                    <li>Build a web application with Flask or FastAPI</li>
+                                    <li>Create a simple demo with Streamlit or Gradio</li>
+                                    <li>Package your model for easy reuse</li>
+                                </ul>
+                            </li>
+                            <li><strong>Document your project thoroughly:</strong>
+                                <ul>
+                                    <li>Comprehensive README with setup instructions</li>
+                                    <li>Jupyter notebooks with explanations and findings</li>
+                                    <li>Comments in code for clarity</li>
+                                </ul>
+                            </li>
+                            <li><strong>Share your work:</strong>
+                                <ul>
+                                    <li>GitHub repository with clear documentation</li>
+                                    <li>Blog post explaining your approach and findings</li>
+                                    <li>Present at local meetups or online forums</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        
+                        <div class="code-block">
+# Simple Flask API for model deployment
+from flask import Flask, request, jsonify
+import pickle
+
+app = Flask(__name__)
+
+# Load the trained model
+with open('models/trained_model.pkl', 'rb') as f:
+    model = pickle.load(f)
+
+with open('models/scaler.pkl', 'rb') as f:
+    scaler = pickle.load(f)
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.json
+    
+    # Preprocess the input
+    input_data = pd.DataFrame([data])
+    input_scaled = scaler.transform(input_data)
+    
+    # Make prediction
+    prediction = model.predict(input_scaled)[0]
+    probability = model.predict_proba(input_scaled)[0].tolist()
+    
+    return jsonify({
+        'prediction': int(prediction),
+        'probability': probability
+    })
+
+if __name__ == '__main__':
+    app.run(debug=True)
+                        </div>
+                        
+                        <div class="code-block">
+# Simple Streamlit app
+import streamlit as st
+import pandas as pd
+import pickle
+
+# Load the model
+@st.cache(allow_output_mutation=True)
+def load_model():
+    with open('models/trained_model.pkl', 'rb') as f:
+        model = pickle.load(f)
+    with open('models/scaler.pkl', 'rb') as f:
+        scaler = pickle.load(f)
+    return model, scaler
+
+model, scaler = load_model()
+
+# App title
+st.title('My AI Project Demo')
+st.write('Enter values to make predictions')
+
+# Create input fields for features
+feature1 = st.slider('Feature 1', min_value=0.0, max_value=10.0, value=5.0)
+feature2 = st.selectbox('Feature 2', options=['Option A', 'Option B', 'Option C'])
+feature3 = st.number_input('Feature 3', min_value=0, max_value=100, value=50)
+
+# Encode categorical feature
+feature2_encoded = 0  # Transform based on your encoding
+if feature2 == 'Option B':
+    feature2_encoded = 1
+elif feature2 == 'Option C':
+    feature2_encoded = 2
+
+# Prepare input data
+input_data = pd.DataFrame([[feature1, feature2_encoded, feature3]])
+input_scaled = scaler.transform(input_data)
+
+# Make prediction when button is clicked
+if st.button('Predict'):
+    prediction = model.predict(input_scaled)[0]
+    probability = model.predict_proba(input_scaled)[0]
+    
+    st.write(f'Prediction: {prediction}')
+    st.write(f'Confidence: {max(probability):.2f}')
+    
+    # Visualize the prediction
+    st.bar_chart(pd.DataFrame({'probability': probability}, 
+                              index=[f'Class {i}' for i in range(len(probability))]))
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="resource-section">
+                <h3>Essential Resources for AI Learning Projects</h3>
+                
+                <div class="resource-list">
+                    <div class="resource-card">
+                        <div class="resource-title">Kaggle</div>
+                        <span class="resource-type">Data & Competitions</span>
+                        <p>Access datasets, tutorials, and competitions to practice your skills and learn from the community.</p>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-title">Google Colab</div>
+                        <span class="resource-type">Development Environment</span>
+                        <p>Free cloud-based Jupyter notebook environment with GPU support for deep learning projects.</p>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-title">PyTorch Documentation</div>
+                        <span class="resource-type">Framework</span>
+                        <p>Comprehensive guides, tutorials, and API references for the PyTorch deep learning framework.</p>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-title">TensorFlow Documentation</div>
+                        <span class="resource-type">Framework</span>
+                        <p>Official documentation, guides, and tutorials for the TensorFlow machine learning platform.</p>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-title">Scikit-learn Documentation</div>
+                        <span class="resource-type">Library</span>
+                        <p>User guide, tutorials, and API reference for the popular machine learning library.</p>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-title">Papers With Code</div>
+                        <span class="resource-type">Research</span>
+                        <p>Free and open resource with papers, code, datasets, and evaluation tables for state-of-the-art AI.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <footer>
+        <p>© 2025 AI Data Flow Architecture | A Comprehensive Tutorial for New Enthusiasts</p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.toggle('open');
+        });
+
+        // Back to top button
+        const backToTopButton = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Component data for detail panel
+        const componentData = {
+            // Data Sources
+            'text-data': {
+                title: 'Text Data',
+                icon: 'T',
+                description: 'Text data encompasses all written or typed content that can be analyzed by AI systems. This includes documents, articles, emails, chat logs, social media posts, and other textual information.',
+                features: ['Natural Language Processing', 'Sentiment Analysis', 'Text Classification', 'Information Extraction'],
+                color: '#2196f3'
+            },
+            'relational-data': {
+                title: 'Relational Data',
+                icon: 'DB',
+                description: 'Structured data organized in tables with relationships between them. Typically stored in relational database management systems (RDBMS) with defined schemas and SQL query capabilities.',
+                features: ['SQL', 'ACID Transactions', 'Referential Integrity', 'Normalized Structure'],
+                color: '#2196f3'
+            },
+            'visual-data': {
+                title: 'Visual Data',
+                icon: 'V',
+                description: 'Images and other visual content that can be processed by computer vision algorithms. This includes photographs, diagrams, charts, and other graphical representations.',
+                features: ['Object Detection', 'Image Classification', 'Facial Recognition', 'Scene Understanding'],
+                color: '#2196f3'
+            },
+            'video-data': {
+                title: 'Video Data',
+                icon: '🎬',
+                description: 'Time-series visual information that requires processing both spatial and temporal dimensions. Video data adds the complexity of analyzing how visual information changes over time.',
+                features: ['Action Recognition', 'Video Segmentation', 'Motion Analysis', 'Temporal Pattern Detection'],
+                color: '#2196f3'
+            },
+            'audio-data': {
+                title: 'Audio Data',
+                icon: '🔊',
+                description: 'Sound recordings that can be analyzed for speech, music, environmental sounds, and other acoustic information. Audio processing is key for speech recognition and sound analysis.',
+                features: ['Speech Recognition', 'Speaker Identification', 'Sound Classification', 'Audio Fingerprinting'],
+                color: '#2196f3'
+            },
+            'non-relational-data': {
+                title: 'Non-Relational Data',
+                icon: 'NoS',
+                description: 'Data that doesn\'t fit into the traditional table structure of relational databases. This includes document stores, key-value pairs, graph databases, and other NoSQL formats.',
+                features: ['Schema Flexibility', 'Horizontal Scalability', 'Document-Oriented Storage', 'Graph Relationships'],
+                color: '#2196f3'
+            },
+            'meta-data': {
+                title: 'Meta Data',
+                icon: 'M',
+                description: 'Data about data - including information about when data was created, who created it, what format it\'s in, and other contextual information that helps organize and understand primary data.',
+                features: ['Data Cataloging', 'Lineage Tracking', 'Data Discovery', 'Context Enrichment'],
+                color: '#2196f3'
+            },
+            
+            // Data Engineering
+            'data-engineers': {
+                title: 'Data Engineers',
+                icon: 'DE',
+                description: 'Professionals who design, build, and maintain the systems that collect, store, and process data. They create the pipelines that transform raw data into formats suitable for analysis and AI applications.',
+                features: ['REST APIs', 'ETL Processing', 'SQL & NoSQL', 'Python/Scala', 'Cloud Infrastructure'],
+                color: '#ff7043'
+            },
+            'data-pipeline': {
+                title: 'Data Pipeline',
+                icon: 'DP',
+                description: 'The orchestrated flow of data from source systems through various processing stages to its final destination. Pipelines automate the movement and transformation of data throughout the organization.',
+                features: ['Data Extraction', 'Data Transformation', 'Data Loading', 'Error Handling', 'Monitoring'],
+                color: '#ff7043'
+            },
+            'data-lake': {
+                title: 'Data Lake',
+                icon: 'DL',
+                description: 'A centralized repository that allows you to store all your structured and unstructured data at any scale. Unlike data warehouses, data lakes store data in its native format until it\'s needed.',
+                features: ['Raw Data Storage', 'Schema-on-Read', 'Support for All Data Types', 'Scalability', 'Cost-Effective Storage'],
+                color: '#ff7043'
+            },
+            'data-medallion': {
+                title: 'Data Medallion Architecture',
+                icon: 'DM',
+                description: 'A data design pattern that organizes data in progressively more refined tiers: Bronze (raw data), Silver (validated and cleaned data), and Gold (business-level, aggregated data).',
+                features: ['Bronze Tier', 'Silver Tier', 'Gold Tier', 'Progressive Refinement', 'Data Quality Layers'],
+                color: '#ff7043'
+            },
+            'data-modeling': {
+                title: 'Data Modeling',
+                icon: 'DM',
+                description: 'The process of creating a conceptual representation of data objects, their relationships, and the rules that govern them. This includes designing schemas, defining relationships, and optimizing for performance.',
+                features: ['Schema Design', 'Data Segregation', 'Query Optimization', 'Data Governance', 'Storage Management'],
+                color: '#ff7043'
+            },
+            'data-ops': {
+                title: 'Data Ops',
+                icon: 'DO',
+                description: 'The application of DevOps principles to data management, focusing on automation, monitoring, and continuous delivery of data services. DataOps aims to improve the quality and reduce the cycle time of data analytics.',
+                features: ['Pipeline Monitoring', 'Data Infrastructure', 'Automation', 'Continuous Integration', 'Incident Response'],
+                color: '#ff7043'
+            },
+            
+            // AI Components
+            'neural-networks': {
+                title: 'Neural Networks',
+                icon: 'NN',
+                description: 'Computing systems inspired by the biological neural networks in animal brains. They form the foundation of many modern AI systems and consist of interconnected nodes (neurons) organized in layers.',
+                features: ['Layered Architecture', 'Backpropagation', 'Activation Functions', 'Weight Optimization'],
+                color: '#5e35b1'
+            },
+            'data-science': {
+                title: 'Data Science',
+                icon: 'DS',
+                description: 'The interdisciplinary field that uses scientific methods, processes, algorithms, and systems to extract knowledge and insights from structured and unstructured data.',
+                features: ['Statistical Analysis', 'Data Visualization', 'Exploratory Analysis', 'Hypothesis Testing'],
+                color: '#5e35b1'
+            },
+            'deep-learning': {
+                title: 'Deep Learning',
+                icon: 'DL',
+                description: 'A subset of machine learning that uses neural networks with multiple layers (deep neural networks) to analyze various factors with a structure similar to the human brain.',
+                features: ['Feature Learning', 'Hierarchical Representations', 'Complex Pattern Recognition', 'End-to-End Learning'],
+                color: '#5e35b1'
+            },
+            'machine-learning': {
+                title: 'Machine Learning',
+                icon: 'ML',
+                description: 'The study of computer algorithms that improve automatically through experience and by the use of data. ML algorithms build a model based on sample data to make predictions or decisions without being explicitly programmed.',
+                features: ['Supervised Learning', 'Unsupervised Learning', 'Reinforcement Learning', 'Feature Engineering'],
+                color: '#5e35b1'
+            },
+            'agi-learning': {
+                title: 'AGI Learning',
+                icon: 'AGI',
+                description: 'Artificial General Intelligence (AGI) learning refers to the development of AI systems with generalized cognitive abilities comparable to human intelligence across multiple domains.',
+                features: ['Cross-Domain Learning', 'Abstract Reasoning', 'Adaptation', 'Self-Improvement'],
+                color: '#5e35b1'
+            },
+            'gen-ai': {
+                title: 'Generative AI',
+                icon: 'GEN',
+                description: 'AI systems capable of creating new content, rather than just analyzing or classifying existing data. This includes language models, image generators, and other creative AI applications.',
+                features: ['Text Generation', 'Image Synthesis', 'RAG Systems', 'Knowledge Bases', 'Agent Capabilities'],
+                color: '#5e35b1'
+            },
+            
+            // AI Applications
+            'chat-apps': {
+                title: 'Chat Applications',
+                icon: 'CA',
+                description: 'Conversational interfaces that leverage AI language models to engage in dialogue with users. These applications can answer questions, provide assistance, and simulate human-like conversation.',
+                features: ['Natural Dialogue', 'Context Retention', 'Knowledge Retrieval', 'Personalization'],
+                color: '#00897b'
+            },
+            'headless-apps': {
+                title: 'Headless Applications',
+                icon: 'HA',
+                description: 'AI systems that operate without direct user interfaces, integrating into existing systems and workflows to provide AI capabilities behind the scenes.',
+                features: ['API-First Design', 'System Integration', 'Background Processing', 'Service Architecture'],
+                color: '#00897b'
+            },
+            'llm-apps': {
+                title: 'LLM Applications',
+                icon: 'LLM',
+                description: 'Applications that leverage Large Language Models to process, generate, and manipulate text for various purposes such as content creation, summarization, and translation.',
+                features: ['Content Generation', 'Summarization', 'Translation', 'Code Generation'],
+                color: '#00897b'
+            },
+            'recommendation-apps': {
+                title: 'Recommendation Applications',
+                icon: 'RA',
+                description: 'Systems that analyze user preferences and behavior to suggest relevant products, content, or actions. These applications improve user experience through personalization.',
+                features: ['Collaborative Filtering', 'Content-Based Filtering', 'Hybrid Approaches', 'Real-Time Recommendations'],
+                color: '#00897b'
+            },
+            'operator-apps': {
+                title: 'Operator Applications',
+                icon: 'OA',
+                description: 'Specialized AI applications that perform specific tasks or functions within larger systems, often handling routine operations automatically and with minimal human intervention.',
+                features: ['Task Automation', 'System Integration', 'Rule-Based Operations', 'Monitoring & Alerts'],
+                color: '#00897b'
+            },
+            'automation-tools': {
+                title: 'Automation Tools',
+                icon: 'AT',
+                description: 'Tools like RPA (Robotic Process Automation), BPA (Business Process Automation), and visualization dashboards that leverage AI to automate workflows and provide insights.',
+                features: ['Process Automation', 'Data Visualization', 'Workflow Management', 'Decision Support'],
+                color: '#00897b'
+            },
+            
+            // ETL Process
+            'extract-process': {
+                title: 'Extract Process',
+                icon: 'E',
+                description: 'The first phase of the ETL process, where data is collected from various source systems. This can involve querying databases, accessing APIs, or reading files from different locations.',
+                features: ['Data Collection', 'Source System Integration', 'Query Optimization', 'Data Discovery'],
+                color: '#1e88e5'
+            },
+            'transform-process': {
+                title: 'Transform Process',
+                icon: 'T',
+                description: 'The middle phase of ETL where raw data is cleaned, validated, and converted into a format suitable for analysis and AI processing. This is often the most complex and resource-intensive part of ETL.',
+                features: ['Data Cleaning', 'Validation', 'Normalization', 'Enrichment', 'Aggregation'],
+                color: '#7b1fa2'
+            },
+            'load-process': {
+                title: 'Load Process',
+                icon: 'L',
+                description: 'The final phase of ETL where transformed data is loaded into target systems such as data warehouses, data lakes, or specific applications for consumption by business users and AI systems.',
+                features: ['Data Storage', 'Indexing', 'Partitioning', 'Compression', 'Access Control'],
+                color: '#43a047'
+            }
+        };
+
+        // Function to populate and show detail panel
+        function showDetailPanel(componentId) {
+            const component = componentData[componentId];
+            if (!component) return;
+            
+            const detailPanel = document.getElementById('detailPanel');
+            const detailIcon = document.getElementById('detailIcon');
+            const detailTitle = document.getElementById('detailTitle');
+            const detailDescription = document.getElementById('detailDescription');
+            const detailFeatures = document.getElementById('detailFeatures');
+            
+            // Clear previous active state
+            document.querySelectorAll('.arch-box.active, .etl-step.active').forEach(box => {
+                box.classList.remove('active');
+            });
+            
+            // Set active state on clicked component
+            const activeElement = document.querySelector(`[data-target="${componentId}"]`);
+            if (activeElement) {
+                activeElement.classList.add('active');
+            }
+            
+            // Update detail panel content
+            detailIcon.textContent = component.icon;
+            detailIcon.style.backgroundColor = component.color;
+            detailTitle.textContent = component.title;
+            detailDescription.textContent = component.description;
+            
+            // Update features
+            detailFeatures.innerHTML = '';
+            component.features.forEach(feature => {
+                const featureTag = document.createElement('span');
+                featureTag.className = 'feature-tag';
+                featureTag.textContent = feature;
+                detailFeatures.appendChild(featureTag);
+            });
+            
+            // Show the panel
+            detailPanel.classList.add('open');
+        }
+
+        // Add click event listeners to all architecture boxes
+        document.querySelectorAll('.arch-box, .etl-step').forEach(box => {
+            box.addEventListener('click', () => {
+                const componentId = box.getAttribute('data-target');
+                showDetailPanel(componentId);
+            });
+        });
+
+        // Highlight a random component on page load for visual interest
+        window.addEventListener('load', () => {
+            const allComponents = document.querySelectorAll('.arch-box');
+            const randomComponent = allComponents[Math.floor(Math.random() * allComponents.length)];
+            randomComponent.classList.add('pulse');
+            
+            // After a few seconds, show the detail panel for this component
+            setTimeout(() => {
+                const componentId = randomComponent.getAttribute('data-target');
+                showDetailPanel(componentId);
+                randomComponent.classList.remove('pulse');
+            }, 1500);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu if open
+                        document.querySelector('.mobile-menu').classList.remove('open');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

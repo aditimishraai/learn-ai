@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Engineering - AI Data Flow Tutorial</title>
+    <link rel="stylesheet" href="assets/css/global.css">
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="sun-icon" viewBox="0 0 24 24">
+            <path d="M12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3zm0-2V4c0-.55-.45-1-1-1s-1 .45-1 1v3c0 .55.45 1 1 1s1-.45 1-1zm0 14c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1s1-.45 1-1v-3c0-.55-.45-1-1-1zM4.93 6.35L3.51 4.93c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.42 1.42c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41zm14.14 14.14l1.42 1.42c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-1.42-1.42c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41zM4 12c0-.55-.45-1-1-1H0c-.55 0-1 .45-1 1s.45 1 1 1h3c.55 0 1-.45 1-1zm20-1h-3c-.55 0-1 .45-1 1s.45 1 1 1h3c.55 0 1-.45 1-1s-.45-1-1-1zM4.93 17.65c-.39.39-.39 1.02 0 1.41l1.42 1.42c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-1.42-1.42c-.39-.39-1.02-.39-1.41 0zm14.14-14.14c.39-.39.39-1.02 0-1.41l-1.42-1.42c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.42 1.42c.39.39 1.02.39 1.41 0z"/>
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" style="display: none;">
+            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+        </svg>
+    </button>
+
+    <!-- Loading Bar -->
+    <div class="loading"></div>
+
+    <header>
+        <h1>Data Engineering</h1>
+        <p>Understanding the ETL process and data transformation</p>
+    </header>
+    
+    <nav>
+        <a href="index.html#overview">Overview</a>
+        <a href="data-sources.html">Data Sources</a>
+        <a href="data-engineering.html">Data Engineering</a>
+        <a href="ai-components.html">AI Components</a>
+        <a href="ai-applications.html">AI Applications</a>
+        <a href="architecture-flow.html">Architecture Flow</a>
+    </nav>
+    
+    <div class="container">
+        <section class="section">
+            <h2>Data Engineering Process</h2>
+            
+            <div class="highlight">
+                <p>Data Engineering is the foundation of any successful AI system. It involves transforming raw data into a format that's ready for AI processing. Let's explore the key components of this process.</p>
+            </div>
+            
+            <div class="card">
+                <h3>Extract (E)</h3>
+                <p>The first step in the ETL process involves pulling data from various sources into a centralized location.</p>
+                <p><strong>Key activities:</strong></p>
+                <ul>
+                    <li>Data source identification</li>
+                    <li>Connection establishment</li>
+                    <li>Data extraction scheduling</li>
+                    <li>Initial data validation</li>
+                </ul>
+                <div class="tech-tags">
+                    <span class="tech-tag">Apache NiFi</span>
+                    <span class="tech-tag">Airbyte</span>
+                    <span class="tech-tag">Fivetran</span>
+                    <span class="tech-tag">Custom Scripts</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Transform (T)</h3>
+                <p>Data transformation involves cleaning, structuring, and enriching the raw data to make it suitable for AI processing.</p>
+                <p><strong>Key activities:</strong></p>
+                <ul>
+                    <li>Data cleaning and normalization</li>
+                    <li>Schema transformation</li>
+                    <li>Feature engineering</li>
+                    <li>Data enrichment</li>
+                </ul>
+                <div class="tech-tags">
+                    <span class="tech-tag">Apache Spark</span>
+                    <span class="tech-tag">dbt</span>
+                    <span class="tech-tag">Pandas</span>
+                    <span class="tech-tag">SQL</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Load (L)</h3>
+                <p>The final step involves loading the transformed data into a storage system that's optimized for AI processing.</p>
+                <p><strong>Key activities:</strong></p>
+                <ul>
+                    <li>Data warehouse loading</li>
+                    <li>Data lake organization</li>
+                    <li>Index optimization</li>
+                    <li>Data versioning</li>
+                </ul>
+                <div class="tech-tags">
+                    <span class="tech-tag">Snowflake</span>
+                    <span class="tech-tag">BigQuery</span>
+                    <span class="tech-tag">Delta Lake</span>
+                    <span class="tech-tag">S3</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Data Quality</h3>
+                <p>Ensuring data quality is crucial for reliable AI outcomes. This involves continuous monitoring and validation.</p>
+                <p><strong>Key activities:</strong></p>
+                <ul>
+                    <li>Data validation rules</li>
+                    <li>Quality metrics tracking</li>
+                    <li>Anomaly detection</li>
+                    <li>Data lineage tracking</li>
+                </ul>
+                <div class="tech-tags">
+                    <span class="tech-tag">Great Expectations</span>
+                    <span class="tech-tag">DataHub</span>
+                    <span class="tech-tag">Monte Carlo</span>
+                    <span class="tech-tag">Custom Validators</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Data Governance</h3>
+                <p>Managing data access, security, and compliance throughout the data engineering process.</p>
+                <p><strong>Key activities:</strong></p>
+                <ul>
+                    <li>Access control</li>
+                    <li>Data privacy compliance</li>
+                    <li>Audit logging</li>
+                    <li>Policy enforcement</li>
+                </ul>
+                <div class="tech-tags">
+                    <span class="tech-tag">Apache Atlas</span>
+                    <span class="tech-tag">Collibra</span>
+                    <span class="tech-tag">Alation</span>
+                    <span class="tech-tag">Custom Solutions</span>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <h3>From Data Engineering to AI Components</h3>
+                <p>Once data is properly engineered and stored, it's ready to be processed by various AI components. The quality of your data engineering directly impacts the performance of your AI systems.</p>
+                <p>In the next section, we'll explore how AI components utilize this prepared data to create intelligent solutions.</p>
+            </div>
+            
+            <div class="nav-container">
+                <a href="ai-components.html" class="cta-button">Next: AI Components →</a>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>© 2025 Data Flow for AI Tutorial | A Comprehensive Guide for New Enthusiasts</p>
+    </footer>
+
+    <script src="assets/js/chat.js"></script>
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = themeToggle.querySelector('.sun-icon');
+        const moonIcon = themeToggle.querySelector('.moon-icon');
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcons(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        });
+
+        function updateThemeIcons(theme) {
+            if (theme === 'light') {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+        }
+
+        // Loading Animation
+        window.addEventListener('load', () => {
+            const loading = document.querySelector('.loading');
+            loading.style.display = 'none';
+        });
+
+        // Smooth Scroll for Navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Add active state to current page in navigation
+        const currentPage = window.location.pathname.split('/').pop();
+        document.querySelectorAll('nav a').forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.style.backgroundColor = 'var(--accent-secondary)';
+            }
+        });
+    </script>
+</body>
+</html>
